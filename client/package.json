@@ -1,0 +1,8 @@
+{
+  "dependencies": {
+    "start": "react-scripts start",
+    "build": "react-scripts build",
+    "react": "^16.8.5",
+    "react-dom": "^16.8.5"
+  }
+}
