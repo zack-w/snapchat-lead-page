@@ -1,8 +1,17 @@
 {
   "dependencies": {
-    "start": "react-scripts start",
     "build": "react-scripts build",
     "react": "^16.8.5",
-    "react-dom": "^16.8.5"
+    "react-dom": "^16.8.5",
+    "start": "react-scripts start"
+  },
+  "devDependencies": {
+    "babel-loader": "^8.0.5",
+    "babel-preset-es2015": "^6.24.1",
+    "babel-preset-react": "^6.24.1",
+    "babel-preset-stage-2": "^6.24.1",
+    "react-scripts": "^2.1.8",
+    "webpack": "^4.29.6",
+    "webpack-dev-server": "^3.2.1"
   }
 }
