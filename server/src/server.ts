@@ -8,7 +8,7 @@ import { join } from 'path';
 require('dotenv').config()
 
 // Init express
-const server: express.Application = express();
+export const server: express.Application = express();
 server.use(bodyParser.json());
 
 // Config vars
@@ -19,6 +19,8 @@ const DIST_FOLDER = join(process.cwd(), 'dist');
 import "./core/sequelize";
 import { InvalidRequestError, EmailInUseError } from '../errors';
 import User from '../models/user.relational';
+import { AppError } from '../errors/app.error';
+import { wrap } from '../middleware';
 
 export interface ICreateAccountArgs {
   firstName: string;
@@ -27,7 +29,7 @@ export interface ICreateAccountArgs {
   password: string;
 };
 
-server.post('/accounts/new', async function (req, res) {
+server.post('/user', wrap(async function (req, res) {
   let params: ICreateAccountArgs = req.body as ICreateAccountArgs;
 
   // Check for missing fields
@@ -55,6 +57,31 @@ server.post('/accounts/new', async function (req, res) {
 
   // Success
   res.status(200).json(newUser._toJSON());
+}));
+
+// Pass errors off to the client
+server.use((err: any, req: express.Request, res: express.Response, next: express.NextFunction) => {
+  let error = err;
+
+  // Send InternalServerError for non-application errors and log for development
+  if (!(err instanceof AppError)) {
+    console.error(`ERROR: ${req.method} ${req.url}`, err);
+
+    error = new Error();
+  }
+
+  let output: any = {
+    message: error.message,
+    stack: undefined
+  };
+
+  for (let prop in error) {
+    if (error.hasOwnProperty(prop)) {
+      output[prop] = error[prop];
+    }
+  }
+
+  res.status(error.statusCode).json(output);
 });
 
 
