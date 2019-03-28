@@ -1,0 +1,74 @@
+
+.form-wrapper {
+	margin: 5vh 5vw;
+}
+
+.form-field {
+	margin: 0 auto;
+	margin-bottom: 4vh;
+}
+
+.form-field .label {
+	color: #FFF;
+	font-size: 1.2em;
+	font-weight: 600;
+	letter-spacing: 2px;
+	text-shadow: 0 0 2px rgba(0,0,0,0.1);
+}
+
+.form-field input {
+	width: 90%;
+	font-size: 1.2em;
+	padding: 2vh 3vw;
+	color: #FFF;
+	background-color: rgba(0,0,0,0.1);
+	font-family: 'Titillium Web', sans-serif;
+	border: 0;
+	border-bottom: 0.5vh solid rgba(255,255,255,0);
+}
+
+.form-field input::-webkit-input-placeholder {
+	color: #FFF;
+}
+
+.ambassadorPreview {
+	padding: 3vh 10vw;
+	display: flex;
+	flex-direction: row;
+	background-color: #FFF;
+	box-shadow: 0 0 6px #f69320;
+}
+
+.ambassadorPreview img {
+	display: flex;
+	flex: 1;
+	height: 13vh;
+	width: auto;
+	border-radius: 10%;
+	box-shadow: 0 0 4px rgba(0,0,0,0.4);
+}
+
+.ambassadorPreview .info {
+	display: flex;
+	flex: 3;
+	vertical-align: middle;
+	color: #f69320;
+	align-items: center;
+	padding-left: 5vw;
+}
+
+.ambassadorPreview .info div {
+	vertical-align: middle;
+}
+
+.form-field .inputDiv {
+	position: relative;
+}
+
+.form-field .incomplete {
+	width: auto;
+	height: 3vh;
+	top: 2.5vh;
+	right: 7vw;
+	position: absolute;
+}

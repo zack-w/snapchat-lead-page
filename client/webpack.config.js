@@ -8,6 +8,9 @@ var config = {
         filename: "bundle.js",
         publicPath: "/app/"
     },
+    devServer: {
+        disableHostCheck: true
+    },
     module: {
         rules: [
             {
@@ -16,6 +19,17 @@ var config = {
                 loader: "babel-loader",
                 query: {
                     presets: ["react", "es2015", "stage-2"]
+                }
+            },
+            {
+                test: /\.css$/,
+                loader: "css-loader"
+            },
+            {
+                test: /\.scss$/,
+                loader: "webpack-sass",
+                options: {
+                    url: false
                 }
             }
         ]
