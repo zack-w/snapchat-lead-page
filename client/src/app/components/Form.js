@@ -1,5 +1,6 @@
 import React, { PureComponent } from "react";
 import "./Form.scss";
+import Complete from "./Complete";
 
 class Form extends PureComponent {
   constructor(props) {
@@ -8,8 +9,26 @@ class Form extends PureComponent {
 	this.state = {
 		name: "",
 		phone: "",
-		email: ""
+		email: "",
+		submitted: false
 	};
+  }
+
+  onSubmit() {
+	// Validate
+	if(
+		!this.isFieldValid("name")
+		|| !this.isFieldValid("phone")
+		|| !this.isFieldValid("email")
+	) {
+		return;
+	}
+
+	// Send the response
+	// TODO
+
+	// Log we submitted
+	this.setState({submitted: true});
   }
 
   isFieldValid(fieldName) {
@@ -23,6 +42,12 @@ class Form extends PureComponent {
   }
 
   render() {
+	if (this.state.submitted) {
+		return (
+			<Complete />
+		);
+	}
+
     return (
 		<div>
 			<h2>

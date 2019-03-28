@@ -2,6 +2,7 @@ import React, { PureComponent } from "react";
 import Header from "./components/Header";
 import Form from "./components/Form";
 import Landing from "./components/Landing";
+import Complete from "./components/Complete";
 
 class App extends PureComponent {
   constructor(props) {
@@ -16,7 +17,7 @@ class App extends PureComponent {
     return (
       <div style={{paddingBottom: 20}}>
         <Header />
-
+        
         {
           this.state.showForm
           ? <Form />
