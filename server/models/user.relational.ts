@@ -7,8 +7,11 @@ import {
 	Unique,
 	AutoIncrement,
 	AllowNull,
-	HasMany
+	HasMany,
+	Default
 } from "sequelize-typescript";
+
+var randomstring = require("randomstring");
 
 @Table({
 	timestamps: false,
@@ -25,12 +28,10 @@ export default class User extends Model<User> {
 	@Column
 	id: number;
 
-	@Unique
 	@AllowNull(false)
 	@Column
 	firstName: string;
 
-	@Unique
 	@AllowNull(false)
 	@Column
 	lastName: string;
@@ -40,17 +41,35 @@ export default class User extends Model<User> {
 	@Column
 	email: string;
 
-	@Unique
 	@AllowNull(false)
 	@Column
 	password: string;
 
-	_toJSON(): any {
-		return {
+	@AllowNull(false)
+	@Column
+	authToken: string;
+
+	@AllowNull(false)
+	@Default(() => randomstring.generate(16))
+	@Column
+	apiKey: string;
+
+	_toJSON(params?: {
+		requestingUser?: User
+	}): any {
+		let res: any = {
 			id: this.id,
 			firstName: this.firstName,
 			lastName: this.lastName,
 			email: this.email
 		};
+
+		if (params) {
+			if (params.requestingUser && params.requestingUser.id == this.id) {
+				res.apiKey = this.apiKey;
+			}
+		}
+
+		return res;
 	}
 }

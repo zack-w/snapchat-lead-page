@@ -5,7 +5,14 @@ import * as url from "url";
 let sequelize;
 
 if (process.env.POSTGRES_URI !== undefined) {
-	sequelize = new Sequelize(process.env.POSTGRES_URI);
+	sequelize = new Sequelize({
+		database: 'lead_test',
+		dialect: 'postgres',
+		username: 'openpollinc',
+		password: '',
+		storage: ':memory:',
+		modelPaths: [__dirname + '/../../models']
+	});
 
 	//@ts-ignore
 	sequelize.authenticate()

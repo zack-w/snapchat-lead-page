@@ -23,6 +23,14 @@ module.exports = {
 			password: {
 				type: Sequelize.STRING,
 				allowNull: false
+			},
+			authToken: {
+				type: Sequelize.STRING,
+				allowNull: true
+			},
+			apiKey: {
+				type: Sequelize.STRING,
+				allowNull: false
 			}
 		});
 	},
