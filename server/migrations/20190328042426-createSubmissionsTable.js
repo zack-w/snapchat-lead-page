@@ -22,6 +22,10 @@ module.exports = {
         type: Sequelize.STRING,
         allowNull: false
       },
+      styling: {
+        type: Sequelize.TEXT,
+        allowNull: true
+      },
 			createdAt: {
 				type: Sequelize.DATE,
 				allowNull: false,
@@ -43,6 +47,10 @@ module.exports = {
           },
           onUpdate: "CASCADE",
           onDelete: "RESTRICT",
+          allowNull: false
+        },
+        niceName: {
+          type: Sequelize.STRING,
           allowNull: false
         },
         key: {

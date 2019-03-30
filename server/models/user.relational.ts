@@ -10,6 +10,8 @@ import {
 	HasMany,
 	Default
 } from "sequelize-typescript";
+import Campaign from "./campaign.relational";
+import CampaignField from "./campaign-field.relational";
 
 var randomstring = require("randomstring");
 
@@ -45,7 +47,6 @@ export default class User extends Model<User> {
 	@Column
 	password: string;
 
-	@AllowNull(false)
 	@Column
 	authToken: string;
 
@@ -53,6 +54,22 @@ export default class User extends Model<User> {
 	@Default(() => randomstring.generate(16))
 	@Column
 	apiKey: string;
+
+	async getFlatCampaigns() {
+		// Get all the campaigns
+		let campaigns: Campaign[] = await Campaign.findAll({
+			where: {
+				ownerUserId: this.id
+			},
+			include: [CampaignField]
+		});
+
+		return campaigns.map((campaign: Campaign) => {
+			let res = campaign._toJSON();
+			res.fields = campaign.campaignFields.map((field: CampaignField) => field._toJSON());
+			return res;
+		});
+	}
 
 	_toJSON(params?: {
 		requestingUser?: User

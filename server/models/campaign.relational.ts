@@ -19,6 +19,7 @@ import CampaignField from "./campaign-field.relational";
 import { CampaignInvalidSubmissionError } from "../errors";
 import Submission from "./submission.relational";
 import SubmissionValue from "./submission-value.relational";
+import BackgroundStyle from "./background-style.relational";
 
 @Table({
 	timestamps: false,
@@ -45,9 +46,16 @@ export default class Campaign extends Model<Campaign> {
 	@BelongsTo(() => User)
 	ownerUser?: User;
 
+	@HasMany(() => CampaignField)
+	campaignFields: CampaignField[];
+
 	@AllowNull(false)
 	@Column
 	name: string;
+
+	@AllowNull(false)
+	@Column
+	styling: string;
 
 	@AllowNull(false)
 	@Default(() => moment.utc().toDate())
@@ -115,11 +123,43 @@ export default class Campaign extends Model<Campaign> {
 		});
 	}
 
+	async flatten(full?: boolean): Promise<any> {
+		let res: any = {
+			id: this.id,
+			name: this.name,
+			styling: JSON.parse(this.styling),
+		};
+
+		// Add the campaign fields..
+		res.fields = (
+			this.campaignFields ||
+			(await CampaignField.findAll({ where: {campaignId: this.id} }))
+		).map((field: CampaignField) => {
+			return field._toJSON();
+		});
+
+		// Get the background style
+		res.backgroundStyle = await BackgroundStyle.findOne({
+			where: {
+				campaignId: this.id
+			}
+		});
+
+		// If we are including the full campaign..
+		if (full) {
+			res.createdAt = this.createdAt;
+			res.submissions = await this.getSubmissionsFlat();
+		}
+
+		return res;
+	}
+
 	_toJSON(): any {
 		return {
 			id: this.id,
 			ownerUserId: this.ownerUserId,
 			name: this.name,
+			styling: JSON.parse(this.styling),
 			createdAt: this.createdAt
 		};
 	}

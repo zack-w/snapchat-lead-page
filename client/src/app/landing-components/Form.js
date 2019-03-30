@@ -1,6 +1,7 @@
 import React, { PureComponent } from "react";
 import "./Form.scss";
 import Complete from "./Complete";
+const axios = require('axios');
 
 class Form extends PureComponent {
   constructor(props) {
@@ -14,21 +15,36 @@ class Form extends PureComponent {
 	};
   }
 
-  onSubmit() {
-	// Validate
-	if(
-		!this.isFieldValid("name")
-		|| !this.isFieldValid("phone")
-		|| !this.isFieldValid("email")
-	) {
-		return;
-	}
+  async onSubmit() {
+		// Validate
+		if(
+			!this.isFieldValid("name")
+			|| !this.isFieldValid("phone")
+			|| !this.isFieldValid("email")
+		) {
+			return;
+		}
 
-	// Send the response
-	// TODO
+		try {
+			// Send the response
+			let res = await axios.post("http://localhost:4000/campaigns/1/submissions", {
+				params: {},
+				values: {
+					fullName: this.state.name,
+					phoneNumber: this.state.phone,
+					email: this.state.email
+				}
+			})
 
-	// Log we submitted
-	this.setState({submitted: true});
+			console.log("GOT RESPONSE");
+			console.log(res);
+
+			// Log we submitted
+			this.setState({submitted: true});
+		} catch(ex) {
+			console.log("ERROR");
+			console.log(ex);
+		}
   }
 
   isFieldValid(fieldName) {
@@ -42,6 +58,7 @@ class Form extends PureComponent {
   }
 
   render() {
+	  // If they submitted..
 	if (this.state.submitted) {
 		return (
 			<Complete />

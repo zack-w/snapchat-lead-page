@@ -1,0 +1,32 @@
+
+.iPhone6S {
+	width: 8.65in;
+	height: 14.55in;
+	transform-origin: top right;
+	transform:scale(0.4);
+	position: absolute;
+    top: 191px;
+	right: 25px;
+	border: 0;
+	border-radius: 0;
+}
+
+.phoneHeader {
+	width: 3.8in;
+    position: absolute;
+    right: 0;
+	text-align: center;
+	z-index: 10;
+}
+
+.leftPanel {
+	width: calc(100% - 5.5in);
+}
+
+.phoneBackdrop {
+	position: absolute;
+	right: 0;
+	top: 95px;
+	width: 4in;
+	height: auto;
+}

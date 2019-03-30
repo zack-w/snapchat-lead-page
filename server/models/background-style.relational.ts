@@ -9,9 +9,10 @@ import {
 	AllowNull,
 	ForeignKey,
 	BelongsTo,
-	HasMany
+	HasMany,
+	Default
 } from "sequelize-typescript";
-import User from "./user.relational";
+import * as moment from 'moment';
 import Campaign from "./campaign.relational";
 
 @Table({
@@ -19,9 +20,9 @@ import Campaign from "./campaign.relational";
 	paranoid: false,
 	charset: "utf8",
 	collate: "utf8_unicode_ci",
-	tableName: "campaignFields"
+	tableName: "backgroundStyles"
 })
-export default class CampaignField extends Model<CampaignField> {
+export default class BackgroundStyle extends Model<BackgroundStyle> {
 	@IsInt
 	@PrimaryKey
 	@AutoIncrement
@@ -39,24 +40,34 @@ export default class CampaignField extends Model<CampaignField> {
 	@BelongsTo(() => Campaign)
 	campaign?: Campaign;
 
-	@AllowNull(false)
 	@Column
-	niceName: string;
+	color: string;
+
+	@Column
+	image: string;
+
+	@Column
+	attachment: string;
+
+	@Column
+	repeat: string;
+
+	@Column
+	size: string;
 
 	@AllowNull(false)
+	@Default(true)
 	@Column
-	key: string;
-
-	@AllowNull(false)
-	@Column
-	type: string;
+	isPreview: boolean;
 
 	_toJSON(): any {
 		return {
 			id: this.id,
-			campaignId: this.campaignId,
-			key: this.key,
-			type: this.type
+			color: this.color,
+			image: this.image,
+			attachment: this.attachment,
+			size: this.size,
+			isPreview: this.isPreview
 		};
 	}
 }

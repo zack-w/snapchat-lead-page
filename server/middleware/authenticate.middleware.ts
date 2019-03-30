@@ -4,6 +4,7 @@ import { wrap } from './wrap.middleware';
 import { NotAuthenticatedError } from "../errors";
 import User from "../models/user.relational";
 import { InvalidAuthToken } from "../errors/authentication/invalid-auth-token.error";
+import { Op } from "sequelize";
 
 export const authenticate = (optional: boolean = false) => {
 	return wrap(async (req: express.Request, res: express.Response, next: express.NextFunction) => {
@@ -42,7 +43,7 @@ export const authenticate = (optional: boolean = false) => {
 		// Search for a valid user
 		let user = await User.findOne({
 			where: {
-				$or: [
+				[Op.or]: [
 					{apiKey: headerToken},
 					{authToken: headerToken}
 				]

@@ -44,13 +44,36 @@ const DIST_FOLDER = join(process.cwd(), 'dist');
 
 // Setup core modules
 import "./core/sequelize";
-import { InvalidRequestError, EmailInUseError, CampaignDoesNotExistError } from '../errors';
+import { InvalidRequestError, EmailInUseError, CampaignDoesNotExistError, NotAuthenticatedError } from '../errors';
 import User from '../models/user.relational';
 import { AppError } from '../errors/app.error';
 import { wrap } from '../middleware';
 import Campaign from '../models/campaign.relational';
 import Submission from '../models/submission.relational';
 import SubmissionValue from '../models/submission-value.relational';
+import { authenticate } from '../middleware/authenticate.middleware';
+import BackgroundStyle from '../models/background-style.relational';
+
+/*
+  Get the authenticated user
+*/
+server.get("/me", authenticate(), wrap(async function (req, res) {
+  if (!req.context.user) {
+    throw Error("unreachable");
+  }
+
+  res.status(200).json(req.context.user._toJSON({
+    requestingUser: req.context.user
+  }));
+}));
+
+server.get("/me/campaigns", authenticate(), wrap(async function (req, res) {
+  if (!req.context.user) {
+    throw Error("unreachable");
+  }
+
+  res.status(200).json(await req.context.user.getFlatCampaigns());
+}));
 
 /*
   Add campaign submission
@@ -61,11 +84,120 @@ export interface ISubmission {
   values: {[index: string]: (string|number)}
 }
 
+server.get("/campaigns/:campaignId", authenticate(true), wrap(async function (req, res) {
+  let params: ISubmission = req.body as ISubmission;
+  let full: boolean = (req.query.full !== undefined);
+
+  // Locate the campaign
+  let campaign: (Campaign | null) = await Campaign.findOne({where: {id: req.params.campaignId}});
+
+  if (!campaign) {
+    throw new CampaignDoesNotExistError();
+  }
+
+  // Do they have access?
+  if (
+    full && (
+      !req.context.isAuthenticated
+      || !req.context.user
+      || req.context.user.id !== campaign.ownerUserId
+    )
+  ) {
+    throw new NotAuthenticatedError();
+  }
+
+  res.status(200).json(await campaign.flatten(full));
+}));
+
+server.put("/campaigns/:campaignId", authenticate(true), wrap(async function (req, res) {
+  let params: any = req.body;
+  let full: boolean = (req.query.full !== undefined);
+
+  // Locate the campaign
+  let campaign: (Campaign | null) = await Campaign.findOne({where: {id: req.params.campaignId}});
+
+  if (!campaign) {
+    throw new CampaignDoesNotExistError();
+  }
+
+  // Do they have access?
+  if (
+    full && (
+      !req.context.isAuthenticated
+      || !req.context.user
+      || req.context.user.id !== campaign.ownerUserId
+    )
+  ) {
+    throw new NotAuthenticatedError();
+  }
+
+  // Update the campaign
+  await Campaign.update(
+    {
+      name: (params.name ? params.name : campaign.name),
+      styling: (params.styling ? (typeof params.styling == "object" ? JSON.stringify(params.styling) : params.styling) : campaign.styling)
+    }, {
+      where: {
+        id: campaign.id
+      }
+    }
+  );
+
+  res.status(200).json({success: true});
+}));
+
+export interface ICampaignUpdateBackgroundStyleArgs {
+  image: string;
+  color: string;
+};
+
+server.put("/campaigns/:campaignId/backgroundStyle", authenticate(true), wrap(async function (req, res) {
+  let params: ICampaignUpdateBackgroundStyleArgs = req.body as ICampaignUpdateBackgroundStyleArgs;
+  let full: boolean = (req.query.full !== undefined);
+
+  // Locate the campaign
+  let campaign: (Campaign | null) = await Campaign.findOne({where: {id: req.params.campaignId}});
+
+  if (!campaign) {
+    throw new CampaignDoesNotExistError();
+  }
+
+  // Do they have access?
+  if (
+    full && (
+      !req.context.isAuthenticated
+      || !req.context.user
+      || req.context.user.id !== campaign.ownerUserId
+    )
+  ) {
+    throw new NotAuthenticatedError();
+  }
+
+  // Get the background style
+  let bgStyle: (BackgroundStyle | null) = await BackgroundStyle.findOne({
+    where: {
+      campaignId: campaign.id
+    }
+  });
+
+  if (!bgStyle) {
+    throw new Error("no background style associated with campaign");
+  }
+
+  // Update it
+  await bgStyle.update({
+    image: params.image ? params.image : bgStyle.image,
+    color: params.color ? params.color : bgStyle.color
+  });
+
+  res.status(200).json({success: true});
+}));
+
 server.post("/campaigns/:campaignId/submissions", wrap(async function (req, res) {
   let params: ISubmission = req.body as ISubmission;
 
   // Locate the campaign
-  let campaign: Campaign = await Campaign.findOne({where: {id: req.params.campaignId}});
+  let campaign: (Campaign | null) = await Campaign.findOne({where: {id: req.params.campaignId}});
 
   if (!campaign) {
     throw new CampaignDoesNotExistError();
@@ -101,7 +233,7 @@ server.get("/campaigns/:campaignId/submissions", wrap(async function (req, res) 
   // TODO: Authenticate
 
   // Locate the campaign
-  let campaign: Campaign = await Campaign.findOne({where: {id: req.params.campaignId}});
+  let campaign: (Campaign | null) = await Campaign.findOne({where: {id: req.params.campaignId}});
 
   if (!campaign) {
     throw new CampaignDoesNotExistError();

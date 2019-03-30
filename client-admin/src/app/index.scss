@@ -1,0 +1,100 @@
+
+a {
+	text-decoration: none;
+}
+
+body {
+	font-size: 2.5em;
+	font-family: 'Titillium Web', sans-serif;
+	background-color: #F5F5F5;
+	background-attachment: fixed;
+	background-size: cover;
+	padding: 0;
+	margin: 0;
+	overflow-x: hidden;
+}
+
+h1 {
+	color: #FFF;
+	font-size: 2.2em;
+	text-shadow: 2px 2px 0.2em rgba(0,0,0,0.2);
+	padding: 1vh 1vh;
+	font-weight: 600;
+	text-align: center;
+	overflow: hidden;
+}
+
+h2 {
+	color: #FFF;
+	font-size: 2.2em;
+	text-shadow: 2px 2px 0.2em rgba(0,0,0,0.2);
+	padding: 0vh 1vh;
+	font-weight: 600;
+	text-align: center;
+}
+
+h3 {
+	color: #333;
+	letter-spacing: 2px;
+	font-size: 18px;
+	padding: 10px 0;
+	margin: 0;
+	font-weight: 700;
+}
+
+p {
+	font-size: 1.2em;
+	font-weight: 300;
+	text-align: center;
+	padding: 0vh 5vh;
+	color: #FFF;
+}
+
+.simplePanel {
+	background-color: #FFF;
+	box-shadow: 0 4px 6px 0 rgba(0, 0, 0, 0.04);
+	padding: 12px 20px;
+	border-radius: 10px;
+	border: 1px solid #E9E9E9;
+}
+
+.simplePanel .element {
+	padding: 8px 10px;
+	border-bottom: 1px solid #EEE;
+}
+
+.simplePanel .element:hover {
+	background-color: #FAFAFA;
+}
+
+.simplePanel .element:last-child {
+	border-bottom: 0;
+}
+
+button {
+	font-family: 'Titillium Web', sans-serif;
+	background-color: #1c8cdc;
+	border-bottom: 3px solid #1874b5;
+	color: #FFF;
+	font-weight: 600;
+	border-radius: 6px;
+	font-size: 14px;
+	padding: 4px 15px;
+	letter-spacing: 0px;
+	text-shadow: 0 0 1px rgba(0,0,0,0.2);
+}
+
+button:focus {
+	outline: 0;
+}
+
+button:hover {
+	margin-top: -2px;
+	margin-bottom: 2px;
+	box-shadow: 0 4px 6px 0 rgba(0, 0, 0, 0.15);
+	cursor: pointer;
+}
+
+button:active {
+	background-color: #1874b5;
+}
