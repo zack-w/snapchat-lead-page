@@ -8,6 +8,7 @@ const axios = require('axios');
 
 export var DYNAMIC_STYLING = {
   _v: 1,
+  font: "Titillium Web",
   header: {
     backgroundColor: "#FFFFFF",
     logoUrl: "https://cdn.shopify.com/s/files/1/0046/5823/3459/files/unagi_logo_170x@2x.png?v=1548467786"
@@ -61,13 +62,21 @@ class LandingApp extends PureComponent {
   updatePageBackground() {
     const styling = this.state.campaign.styling;
 
+    this.setDynamicStyles(DYNAMIC_STYLING, styling);
+
     // Update the body style
     document.body.style = `
       background-image: ${styling.backgroundImage};
       background-color: #${styling.backgroundColor};
+      font-family: ${DYNAMIC_STYLING.font}, sans-serif;
     `;
 
-    this.setDynamicStyles(DYNAMIC_STYLING, styling);
+    // Load the fonts
+    WebFont.load({
+        google: {
+            families: [`${DYNAMIC_STYLING.font}:200,300,400,500,600,700,800,900`]
+        }
+    });
     this.forceUpdate();
   }
 
