@@ -12,6 +12,7 @@
     "axios": "^0.18.0",
     "chroma-js": "^2.0.3",
     "css-loader": "^2.1.1",
+    "font-picker": "^3.0.0",
     "history": "^4.9.0",
     "node-sass": "^4.11.0",
     "path-to-regexp": "^3.0.0",

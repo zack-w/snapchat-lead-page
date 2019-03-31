@@ -7,9 +7,12 @@ import * as chroma from "chroma-js";
 import { SketchPicker } from 'react-color';
 import { API_URL } from "../../App";
 import ColorPickerButton from "../shared/ColorPickerButton";
+import FontPicker from "../shared/FontPicker";
+import FontManager from "font-picker/dist/font-manager/font-manager/FontManager";
 
 export var DYNAMIC_STYLING = {
     _v: 1,
+    font: "",
     header: {
         backgroundColor: "#FFFFFF",
         logoUrl: "https://cdn.shopify.com/s/files/1/0046/5823/3459/files/unagi_logo_170x@2x.png?v=1548467786"
@@ -21,13 +24,14 @@ class Campaign extends PureComponent {
 	super(props);
 	
     this.state = {
-		loading: true,
+        loading: true,
+        validatedLoading: false,
 		campaignId: null,
         campaign: {},
         backgroundSelectedColor: 0,
         backgroundColors: ['#FFFFFF', '#FFFFFF', '#FFFFFF']
     };
-    
+
     selectBG();
   }
 
@@ -59,6 +63,12 @@ class Campaign extends PureComponent {
       }
     });
 
+    console.log("Campaign Style Tree: ");
+    console.log(campaignStyleTree);
+
+    console.log("Dynamic Styling: " );
+    console.log(DYNAMIC_STYLING);
+
     // Bump version for change detection
     DYNAMIC_STYLING._v++;
   }
@@ -79,11 +89,22 @@ class Campaign extends PureComponent {
                     this.setState({
                         backgroundColors: res.data.styling.svgColors
                     });
+                    
+                    for (let i = 0; res.data.styling.svgColors.length > i; i++) {
+                        updateColor(i + 1, res.data.styling.svgColors[i].replace('#', ''));
+                    }
                 }
 
                 // Update dynamic styles
-                this.setDynamicStyles(res.data.styling);
-                console.log(DYNAMIC_STYLING);
+                this.setDynamicStyles(DYNAMIC_STYLING, res.data.styling);
+
+                WebFont.load({
+                    google: {
+                        families: [`${DYNAMIC_STYLING.font}:200,300,400,500,600,700,800,900`]
+                    }
+                });
+
+                this.setState({validatedLoading: true});
             }
 		} catch(ex) {
 			console.log("ERROR");
@@ -106,6 +127,11 @@ class Campaign extends PureComponent {
     }
     
     async saveStyleChanges() {
+        // If we didn't validate loading...
+        if (!this.state.validatedLoading) {
+            return false;
+        }
+
         // Make the request
         try {
             // Create the styling variable
@@ -134,7 +160,7 @@ class Campaign extends PureComponent {
     }
 
   render() {
-	let params = this.props.params ? this.props.params : {};
+    let params = this.props.params ? this.props.params : {};
 
     // If we are loading
     if (this.state.loading || !this.state.campaign) {
@@ -162,9 +188,38 @@ class Campaign extends PureComponent {
         </div>
 
         <img class="phoneBackdrop" src="https://i.imgur.com/TEO3xTX.png" />
-        <iframe ref="demoiFrame" src="http://71.178.191.244:8080/" className="iPhone6S"></iframe>
+        <iframe ref="demoiFrame" src="http://localhost:8080/" className="iPhone6S"></iframe>
 
         <div className="leftPanel">
+            <div className="tabNav simplePanel">
+                <div>
+                    <a>
+                        <img src="/assets/img/dashboard.svg" />
+                        <br />
+                        Summary
+                    </a>
+                    <div className="bottomBar">&nbsp;</div>
+                </div>
+
+                <div>
+                    <a>
+                        <img src="/assets/img/paintbrush-outline.svg" />
+                        <br />
+                        Design
+                    </a>
+                    <div className="bottomBar">&nbsp;</div>
+                </div>
+
+                <div>
+                    <a>
+                        <img src="/assets/img/two-settings-cogwheels.svg" />
+                        <br />
+                        Integrate
+                    </a>
+                    <div className="bottomBar">&nbsp;</div>
+                </div>
+            </div>
+
             <h3>FIELDS COLLECTED</h3>
 
             <div>
@@ -187,9 +242,33 @@ class Campaign extends PureComponent {
 
             <br />
 
+            <h3>PAGE STYLES</h3>
+
+            <div className="simplePanel" style={{maxWidth: "500px", marginTop: 0}}>
+                <FontPicker
+                    activeFontFamily={DYNAMIC_STYLING.font}
+                    onChange={nextFont => {
+                        if (nextFont) {
+                            let f = (typeof nextFont == "object" ? nextFont.family : nextFont);
+                            if (f == "") return;
+                            DYNAMIC_STYLING.font = (typeof nextFont == "object" ? nextFont.family : nextFont);
+                            this.saveStyleChanges();
+                            this.forceUpdate();
+                        }
+                    }}
+                />
+            </div>
+
+            <br />
+
             <h3>BACKGROUND</h3>
 
             <div className="simplePanel" style={{maxWidth: "500px", marginTop: 0}}>
+                <div style={{color: "#666", fontWeight: 200, fontSize: 14}}>
+                    The background pattern has multiple colors. Play around with the colors below to
+                    change the design in real time.
+                </div>
+
                 {
                     this.state.backgroundColors.map((color, i) => {
                         return (
@@ -199,11 +278,11 @@ class Campaign extends PureComponent {
                                 onColorChange={(color) => {
                                     // Set the background color & update
                                     this.state.backgroundColors[i] = color.hex;
-                                    updateColor(i, color.hex.replace('#', ''));
-                                    this.forceUpdate();
+                                    updateColor(i + 1, color.hex.replace('#', ''));
 
                                     // Upload new background
                                     this.saveStyleChanges();
+                                    this.forceUpdate();
                                 }}
                             />
                         );
@@ -220,13 +299,9 @@ class Campaign extends PureComponent {
                     color={DYNAMIC_STYLING.header.backgroundColor}
                     label={""}
                     onColorChange={(color) => {
-                        // Set the background color & update
-                        this.state.backgroundColors[i] = color.hex;
-                        updateColor(i, color.hex.replace('#', ''));
-                        this.forceUpdate();
-
-                        // Upload new background
+                        DYNAMIC_STYLING.header.backgroundColor = color.hex;
                         this.saveStyleChanges();
+                        this.forceUpdate();
                     }}
                 />
             </div>

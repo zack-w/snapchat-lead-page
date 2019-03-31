@@ -98,3 +98,41 @@ button:hover {
 button:active {
 	background-color: #1874b5;
 }
+
+.tabNav {
+	margin-bottom: 20px;
+}
+
+.tabNav > div {
+	padding: 20px;
+	display: inline-block;
+	text-align: center;
+}
+
+.tabNav > div:hover {
+	background-color: #F9F9F9;
+	box-shadow: 0 4px 6px 0 rgba(0, 0, 0, 0.04);
+	cursor: pointer;
+}
+
+.tabNav div > a {
+	display: block;
+	color: #0b75c1;
+	font-weight: bold;
+	letter-spacing: 1px;
+}
+
+.tabNav div > a > img {
+	height: 26px;
+	width: auto;
+}
+
+.tabNav .bottomBar {
+	background-color: #0b75c1;
+	width: 80px;
+	font-size: 0;
+	height: 4px;
+	border-radius: 6px;
+	display: block;
+	margin: 5px auto;
+}

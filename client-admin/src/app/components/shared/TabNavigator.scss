@@ -1,0 +1,19 @@
+
+.elementNavButton {
+	background-color: #FFF;
+	box-shadow: 0 4px 6px 0 rgba(0, 0, 0, 0.04);
+	padding: 12px 20px;
+	border-radius: 10px;
+	border: 1px solid #E9E9E9;
+}
+
+.elementNavButton:hover {
+	cursor: pointer;
+	background-color: #FFF;
+}
+
+.elementNavButton .title {
+	font-weight: 400;
+	color: #000;
+	font-size: 16px;
+}

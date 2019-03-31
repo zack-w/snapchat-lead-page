@@ -1,0 +1,98 @@
+
+$box-shadow: 0 0 3px rgba(0, 0, 0, 0.2);
+$color-dropdown-button: #FFF;
+$color-font-list: #eaeaea;
+$element-height: 35px;
+$transition-duration: 0.3s;
+
+.expanded ul {
+	max-height: 200px;
+}
+
+.dropdown-font-family {
+	color: #000;
+	font-size: 16px;
+	padding: 2px 4px;
+}
+
+// Dropdown menu containing the pickerId of the active font and the dropdown icon
+// (loading/arrow/error)
+.dropdown-button {
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+	height: $element-height;
+	padding: 0 10px;
+	background: $color-dropdown-button;
+	border-radius: 0px;
+	border-bottom: 2px solid #EEE;
+
+	&:hover,
+	&:focus {
+		cursor: pointer;
+		box-shadow: $box-shadow;
+	}
+
+	.dropdown-font-name {
+		overflow: hidden;
+		white-space: nowrap;
+	}
+}
+
+// Dropdown icon indicating the state (spinner while loading the font list, arrow when loaded
+// successfully, warning icon on error)
+
+.dropdown-icon {
+	margin-left: 10px;
+}
+
+// Font list
+
+ul {
+	position: absolute;
+	z-index: 1;
+	width: 100%;
+	top: calc(100% + 10px);
+	max-height: 0;
+	margin: 0;
+	padding: 10px 0;
+	overflow-x: hidden;
+	overflow-y: auto;
+	background: #FFF;
+	border-radius: 6px;
+	box-shadow: 0 0 30px rgba(0, 0, 0, 0.3);
+	transition: $transition-duration;
+	-webkit-overflow-scrolling: touch;
+
+	// Font list elements
+	li {
+		height: $element-height;
+		list-style: none;
+		padding: 6px 20px 0 20px;
+		vertical-align: middle;
+
+		// Button inside font list element (completely fills <li>)
+		.dropdown-button {
+			display: flex;
+			align-items: center;
+			width: 100%;
+			height: 100%;
+			white-space: nowrap;
+			line-height: 20px;
+
+			&:hover,
+			&:focus {
+				background: darken($color-font-list, 5%);
+			}
+
+			&.active-font {
+				background: darken($color-font-list, 10%);
+			}
+		}
+	}
+
+	li:hover {
+		background-color: #F5F5F5;
+		cursor: pointer;
+	}
+}

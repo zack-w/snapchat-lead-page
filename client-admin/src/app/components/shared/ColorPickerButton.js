@@ -47,6 +47,8 @@ class ColorPickerButton extends PureComponent {
                     if (this.props.onColorChange) {
                       this.props.onColorChange(color);
                     }
+
+                    this.forceUpdate();
                 }}
               />
             </div>
