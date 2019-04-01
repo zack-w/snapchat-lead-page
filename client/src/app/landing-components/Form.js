@@ -36,9 +36,6 @@ class Form extends PureComponent {
 				}
 			})
 
-			console.log("GOT RESPONSE");
-			console.log(res);
-
 			// Log we submitted
 			this.setState({submitted: true});
 		} catch(ex) {

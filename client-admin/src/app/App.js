@@ -10,7 +10,7 @@ import axios from "axios";
 
 let workingPath = location.pathname;
 
-export const API_URL = "http://localhost:4000";
+export const API_URL = "http://71.178.191.244:4000";
 
 export var mainAppComponent = null;
 

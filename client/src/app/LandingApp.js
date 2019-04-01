@@ -7,12 +7,22 @@ import Complete from "./landing-components/Complete";
 const axios = require('axios');
 
 export var DYNAMIC_STYLING = {
-  _v: 1,
+  _v: -1,
   font: "Titillium Web",
   header: {
-    backgroundColor: "#FFFFFF",
-    logoUrl: "https://cdn.shopify.com/s/files/1/0046/5823/3459/files/unagi_logo_170x@2x.png?v=1548467786"
-  }
+      backgroundColor: "#FFFFFF",
+      logoUrl: "https://cdn.shopify.com/s/files/1/0046/5823/3459/files/unagi_logo_170x@2x.png?v=1548467786"
+  },
+  content: {
+      landingTitleText: "The first premium electric scooter just came to UMD",
+      landingBodyText: "Our ambassador will meet you on campus and give you a free demo. No strings attached.",
+      landingButtonText: "RIDE NOW",
+      formTitleText: "Let's get you riding",
+      formBodyText: "Once you submit this form, Ryan, our University of Maryland campus ambassador will text you to coordinate a demo."
+  },
+  svgColors: [],
+  backgroundColor: "#FFFFFF",
+  svgBase: ""
 };
 
 class LandingApp extends PureComponent {
@@ -42,6 +52,11 @@ class LandingApp extends PureComponent {
       if (dynamicStylesTree[inKey] !== undefined) {
         // If they are objects, recurse
         if (
+            Array.isArray(dynamicStylesTree[inKey])
+            && Array.isArray(inVal)
+        ) {
+            dynamicStylesTree[inKey] = inVal;
+        } else if (
           typeof dynamicStylesTree[inKey] === "object"
           && typeof inVal === "object"
         ) {
@@ -54,9 +69,6 @@ class LandingApp extends PureComponent {
         }
       }
     });
-
-    // Bump version for change detection
-    DYNAMIC_STYLING._v++;
   }
 
   updatePageBackground() {
@@ -83,7 +95,7 @@ class LandingApp extends PureComponent {
   async componentDidMount() {
     try {
 			// Fetch the campaign
-			let res = await axios.get("http://localhost:4000/campaigns/1");
+			let res = await axios.get("http://71.178.191.244:4000/campaigns/1");
 
 			// We got the data
 			this.setState({

@@ -32,16 +32,18 @@
 }
 
 .ambassadorPreview {
+	margin: 0vh 2vh;
 	padding: 3vh 10vw;
 	display: flex;
 	flex-direction: row;
-	background-color: #FFF;
+	border-radius: 10px;
+	background-color: rgba(255, 255, 255, 1);
 	box-shadow: 0 0 6px #f69320;
 }
 
 .ambassadorPreview img {
 	display: flex;
-	flex: 1;
+	flex: 2;
 	height: 13vh;
 	width: auto;
 	border-radius: 10%;
@@ -50,7 +52,7 @@
 
 .ambassadorPreview .info {
 	display: flex;
-	flex: 3;
+	flex: 7;
 	vertical-align: middle;
 	color: #f69320;
 	align-items: center;

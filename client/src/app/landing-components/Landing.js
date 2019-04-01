@@ -1,5 +1,6 @@
 import React, { PureComponent } from "react";
 import "./Landing.scss";
+import { DYNAMIC_STYLING } from "../LandingApp";
 
 class Landing extends PureComponent {
   constructor(props) {
@@ -24,17 +25,16 @@ class Landing extends PureComponent {
     return (
 		<div>
 			<h1>
-				The first premium electric scooter just came to UMD
+				{DYNAMIC_STYLING.content.landingTitleText}
 			</h1>
 
 			<p>
-				Our ambassador will meet you on campus and give you a free demo.
-				No strings attached.
+				{DYNAMIC_STYLING.content.landingBodyText}
 			</p>
 
 			<div className="callToActionWrapper">
 				<button onClick={() => this.onSubmit()}>
-					RIDE NOW
+					{DYNAMIC_STYLING.content.landingButtonText}
 				</button>
 			</div>
 		</div>

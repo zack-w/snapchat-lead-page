@@ -80,12 +80,8 @@ export default class FontPicker extends PureComponent {
 		const { activeFontFamily: fontFamilyProps } = this.props;
 		const { activeFontFamily: fontFamilyState } = this.state;
 
-		console.log("+ Props family: " + this.props.activeFontFamily);
-		console.log("+ State family: " + this.state.activeFontFamily);
-
 		if (this.props.activeFontFamily !== this.state.activeFontFamily) {
 			this.setActiveFontFamily(this.props.activeFontFamily);
-			console.log(this.state);
 		}
 	}
 
@@ -133,9 +129,6 @@ export default class FontPicker extends PureComponent {
 			activeFontFamily,
 		});
 		onChange(this.fontManager.getActiveFont()); */
-
-		console.log(`**** ${activeFontFamily}`);
-		console.log(DYNAMIC_STYLING);
 
 		this.state.activeFontFamily = activeFontFamily;
 
@@ -199,7 +192,6 @@ export default class FontPicker extends PureComponent {
 	}
 
 	render() {
-		console.log("RERERENDER");
 		const { sort } = this.props;
 		const { activeFontFamily, expanded, loadingStatus } = this.state;
 
@@ -209,22 +201,21 @@ export default class FontPicker extends PureComponent {
 			fonts.sort((font1, font2) => font1.family.localeCompare(font2.family));
 		}
 
-		console.log(this.state);
-
 		// Render font picker button and attach font list to it
 		return (
 			<div
 				id={`font-picker${this.fontManager.selectorSuffix}`}
 				className={expanded ? "expanded" : ""}
 				style={{position: "relative"}}
-			>
+			>	
+				<h4>Font</h4>
 				<span
 					type="button"
 					className="dropdown-button"
 					onClick={this.toggleExpanded}
 					onKeyPress={this.toggleExpanded}
 				>
-					<p className="dropdown-font-family"><strong>Font:</strong> {activeFontFamily}</p>
+					<p className="dropdown-font-family">{activeFontFamily}</p>
 					<p className={`dropdown-icon ${loadingStatus}`} />
 				</span>
 				{loadingStatus === "finished" && this.state.expanded && this.generateFontList(fonts)}

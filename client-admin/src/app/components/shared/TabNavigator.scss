@@ -1,19 +1,52 @@
 
-.elementNavButton {
-	background-color: #FFF;
+.tabNav {
+	margin-bottom: 20px;
+}
+
+.tabNav > div {
+	padding: 20px 20px 8px 20px;
+	display: inline-block;
+	text-align: center;
+}
+
+.tabNav > div:hover {
+	background-color: #F9F9F9;
 	box-shadow: 0 4px 6px 0 rgba(0, 0, 0, 0.04);
-	padding: 12px 20px;
-	border-radius: 10px;
-	border: 1px solid #E9E9E9;
-}
-
-.elementNavButton:hover {
 	cursor: pointer;
-	background-color: #FFF;
 }
 
-.elementNavButton .title {
-	font-weight: 400;
-	color: #000;
-	font-size: 16px;
+.tabNav div > a {
+	display: block;
+	color: #0b75c1;
+	font-weight: 500;
+	letter-spacing: 1px;
+}
+
+.tabNav div > a > img {
+	height: 26px;
+	width: auto;
+}
+
+.tabNav .bottomBar {
+	background-color: #0b75c1;
+	width: 80px;
+	font-size: 0;
+	height: 2px;
+	border-radius: 6px;
+	display: block;
+	margin: 5px auto;
+}
+
+.tabNav .bottomBarEmpty {
+	background-color: #FFF;
+	opacity: 0;
+	width: 80px;
+	font-size: 0;
+	height: 2px;
+	border-radius: 6px;
+	display: block;
+	margin: 5px auto;
+}
+
+.tabContent {
 }

@@ -1,0 +1,37 @@
+
+.wrapper {
+	text-align: center;
+	padding: 20px 5%;
+}
+
+.wrapper > div > img {
+	height: 45px;
+	width: auto;
+}
+
+.wrapper > h1 {
+	padding: 0;
+	vertical-align: top;
+	color: #ff4a01;
+	font-size: 28px;
+	text-shadow: none;
+	display: inline-block;
+	font-weight: 200;
+}
+
+.wrapper .topText > img {
+	height: 45px;
+	margin: 23px 0 0 15px;
+	width: auto;
+	vertical-align: top;
+}
+
+.wrapper > iframe {
+	border-radius: 6px;
+	border: 10px solid #EEE;
+}
+
+.wrapper > a > button {
+	background-color: #ff4a01;
+    border-bottom: 3px solid #ca3e06
+}
