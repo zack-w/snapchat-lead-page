@@ -6,6 +6,9 @@
   "scripts": {
     "postinstall": "cd server;yarn"
   },
+  "engines": {
+    "yarn": "1.15.2"
+  },
   "keywords": [],
   "author": "",
   "license": "ISC",
