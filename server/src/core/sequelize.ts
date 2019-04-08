@@ -4,7 +4,7 @@ import * as url from "url";
 
 let sequelize;
 
-if (process.env.POSTGRES_URI !== undefined) {
+if (process.env.DATABASE_URL !== undefined) {
 	sequelize = new Sequelize({
 		database: 'lead_test',
 		dialect: 'postgres',
