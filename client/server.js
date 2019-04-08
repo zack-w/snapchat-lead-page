@@ -6,6 +6,8 @@ const port = process.env.PORT || 5000;
 require('dotenv').config()
 
 //Static file declaration
+app.use('/assets', express.static(path.join(__dirname+'/src/assets')));
+
 app.use(express.static(path.join(__dirname, 'dist')));
 
 //production mode
@@ -16,8 +18,6 @@ if(process.env.NODE_ENV === 'production') {
     res.sendfile(path.join(__dirname = 'dist/index.html'));
   })
 }
-
-app.use('/assets', express.static(path.join(__dirname+'/src/assets')));
 
 app.get('*', (req, res) => {
   res.sendFile(path.join(__dirname+'/dist/index.html'));
