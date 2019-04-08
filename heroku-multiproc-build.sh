@@ -13,15 +13,23 @@ else
 fi
 
 # Build the client
-echo "- Building client";
+if [ "$PROCFILE" = "" ] || [ "$PROCFILE" = "client/Procfile" ]; then
+	echo "- Building client";
 
-cd ./client;
-yarn;
-cd ../;
+	cd ./client;
+	yarn;
+	cd ../;
+else
+	echo "- Not building server, not relevant to build"
+fi
 
 # Build the client admin
-echo "- Building client admin";
+if [ "$PROCFILE" = "" ] || [ "$PROCFILE" = "client-admin/Procfile" ]; then
+	echo "- Building client admin";
 
-cd ./client-admin;
-yarn;
-cd ../;
+	cd ./client-admin;
+	yarn;
+	cd ../;
+else
+	echo "- Not building server, not relevant to build"
+fi
