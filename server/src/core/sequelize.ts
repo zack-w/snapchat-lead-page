@@ -17,6 +17,7 @@ if (process.env.DATABASE_URL !== undefined) {
 		database: config.database,
 		logging: true,
 		dialect: "postgres",
+		modelPaths: [__dirname + '/../../models'],
 		dialectOptions: {
 			ssl: { require: true }
 		}
