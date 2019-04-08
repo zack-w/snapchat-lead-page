@@ -1,6 +1,7 @@
 import React, { PureComponent } from "react";
 import "./Form.scss";
 import Complete from "./Complete";
+import { ENV } from "../../environments/environment";
 const axios = require('axios');
 
 class Form extends PureComponent {
@@ -27,7 +28,7 @@ class Form extends PureComponent {
 
 		try {
 			// Send the response
-			let res = await axios.post("http://localhost:4000/campaigns/1/submissions", {
+			let res = await axios.post(`${ENV.API_URL}/campaigns/1/submissions`, {
 				params: {},
 				values: {
 					fullName: this.state.name,

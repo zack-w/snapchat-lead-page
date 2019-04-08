@@ -3,6 +3,7 @@ import Header from "./landing-components/Header";
 import Form from "./landing-components/Form";
 import Landing from "./landing-components/Landing";
 import Complete from "./landing-components/Complete";
+import { ENV } from "../environments/environment";
 
 const axios = require('axios');
 
@@ -95,7 +96,7 @@ class LandingApp extends PureComponent {
   async componentDidMount() {
     try {
 			// Fetch the campaign
-			let res = await axios.get("http://71.178.191.244:4000/campaigns/1");
+			let res = await axios.get(`${ENV.API_URL}/campaigns/1`);
 
 			// We got the data
 			this.setState({
