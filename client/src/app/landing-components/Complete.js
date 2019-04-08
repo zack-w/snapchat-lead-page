@@ -15,7 +15,7 @@ class Complete extends PureComponent {
 				Done.
 			</h2>
 			<p>
-				Ryan has been notified and will be in contact shortly.
+				Sarah has been notified and will be in contact shortly.
 			</p>
 		</div>
     );

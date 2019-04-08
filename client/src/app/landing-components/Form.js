@@ -71,12 +71,12 @@ class Form extends PureComponent {
 
 			<div className="ambassadorPreview">
 				<div className="image">
-					<img src="https://i.imgur.com/5Jqzopx.png" />
+					<img src="https://i.imgur.com/0WWkEqM.jpg" />
 				</div>
 
 				<div className="info">
 					<div>
-						<b>Zachary Wynegar</b>
+						<b>Sarah Jans</b>
 						<br />
 						UMD Ambassador
 						<br />
@@ -86,7 +86,7 @@ class Form extends PureComponent {
 			</div>
 
 			<p>
-				Once you submit this form, Ryan, our University of Maryland
+				Once you submit this form, Sarah, our University of Maryland
 				campus ambassador will text you to coordinate a demo.
 			</p>
 
