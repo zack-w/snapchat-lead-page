@@ -2,7 +2,8 @@
   "name": "lead-pages-client",
   "main": "index.js",
   "scripts": {
-    "start": "npm run build",
+    "start": "npm run build:prod",
+    "start-dev": "npm run build",
     "build": "webpack -d && cp src/index.html dist/index.html && webpack-dev-server --host 0.0.0.0 --content-base src/ --inline --hot --history-api-fallback",
     "build:prod": "webpack -p && cp src/index.html dist/index.html",
     "postinstall": "echo \"** Building client react.js app via postinstall\";npm run-script build:prod"
