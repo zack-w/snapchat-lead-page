@@ -4,8 +4,9 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-	"postinstall": "cd server;yarn",
-	"start-api": "cd server;npm run-script start"
+    "postinstall": "./heroku-multiproc-build.sh",
+    "start-api": "cd server;npm run-script start",
+    "start-client": "cd client;npm run-script start"
   },
   "engines": {
     "yarn": "1.15.2"
