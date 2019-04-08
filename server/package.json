@@ -9,7 +9,7 @@
     "dev": "ts-node-dev --respawn --transpileOnly ./src/server.ts",
     "prod": "tsc && node ./build/server.js",
     "build": "tsc",
-    "postinstall": "tsc",
+    "postinstall": "echo \"** Building server dist through postinstall call\";tsc",
     "start": "node ./dist/src/server.js",
     "build-full": "cd ../client;npm build;cd ../server;npm build"
   },
