@@ -44,7 +44,7 @@ const DIST_FOLDER = join(process.cwd(), 'dist');
 
 // Setup core modules
 import "./core/sequelize";
-import { InvalidRequestError, EmailInUseError, CampaignDoesNotExistError, NotAuthenticatedError } from '../errors';
+import { InvalidRequestError, EmailInUseError, CampaignDoesNotExistError, NotAuthenticatedError, CampaignFieldDoesNotExistError } from '../errors';
 import User from '../models/user.relational';
 import { AppError } from '../errors/app.error';
 import { wrap } from '../middleware';
@@ -53,6 +53,7 @@ import Submission from '../models/submission.relational';
 import SubmissionValue from '../models/submission-value.relational';
 import { authenticate } from '../middleware/authenticate.middleware';
 import BackgroundStyle from '../models/background-style.relational';
+import CampaignField from '../models/campaign-field.relational';
 
 /*
   Get the authenticated user
@@ -146,10 +147,142 @@ server.put("/campaigns/:campaignId", authenticate(true), wrap(async function (re
   res.status(200).json({success: true});
 }));
 
+export interface ICampaignCreateField {
+  niceName: string;
+}
+
+server.post("/campaigns/:campaignId/field", authenticate(true), wrap(async function (req, res) {
+  let params: ICampaignCreateField = req.body as ICampaignCreateField;
+  let full: boolean = (req.query.full !== undefined);
+
+  // Locate the campaign
+  let campaign: (Campaign | null) = await Campaign.findOne({where: {id: req.params.campaignId}});
+
+  if (!campaign) {
+    throw new CampaignDoesNotExistError();
+  }
+
+  // Do they have access?
+  if (
+    full && (
+      !req.context.isAuthenticated
+      || !req.context.user
+      || req.context.user.id !== campaign.ownerUserId
+    )
+  ) {
+    // throw new NotAuthenticatedError();
+  }
+
+  // Create the field
+  let field = new CampaignField({
+    campaignId: campaign.id,
+    niceName: params.niceName,
+    key: params.niceName.toLowerCase().replace(" ", ""),
+    type: "string"
+  });
+
+  await field.save();
+
+  res.status(200).json(field);
+}));
+
 export interface ICampaignUpdateBackgroundStyleArgs {
   image: string;
   color: string;
 };
+
+// let newField = await axios.put(`${API_URL}/campaigns/${this.state.campaignId}/field/${fieldId}`, values);
+
+export interface ICampaignFieldUpdateArgs {
+  niceName: string;
+  key: string;
+  type: string;
+};
+
+server.put("/campaigns/:campaignId/field/:fieldId", authenticate(true), wrap(async function (req, res) {
+  let params: ICampaignFieldUpdateArgs = req.body as ICampaignFieldUpdateArgs;
+  let full: boolean = (req.query.full !== undefined);
+
+  // Locate the campaign
+  let campaign: (Campaign | null) = await Campaign.findOne({where: {id: req.params.campaignId}});
+
+  if (!campaign) {
+    throw new CampaignDoesNotExistError();
+  }
+
+  // Do they have access?
+  if (
+    full && (
+      !req.context.isAuthenticated
+      || !req.context.user
+      || req.context.user.id !== campaign.ownerUserId
+    )
+  ) {
+    throw new NotAuthenticatedError();
+  }
+
+  // Get the field
+  let field: (CampaignField | null) = await CampaignField.findOne({
+    where: {
+      id: req.params.fieldId,
+      campaignId: campaign.id
+    }
+  });
+
+  // If the field doesn't exist
+  if (!field) {
+    throw new CampaignFieldDoesNotExistError();
+  }
+
+  // Update the field
+  field.niceName = (params.niceName ? params.niceName : field.niceName);
+  field.key = (params.key ? params.key : field.key);
+  field.type = (params.type ? params.type : field.type);
+  await field.save();
+
+  res.status(200).json(field._toJSON());
+}));
+
+server.delete("/campaigns/:campaignId/field/:fieldId", authenticate(true), wrap(async function (req, res) {
+  let params: ICampaignFieldUpdateArgs = req.body as ICampaignFieldUpdateArgs;
+  let full: boolean = (req.query.full !== undefined);
+
+  // Locate the campaign
+  let campaign: (Campaign | null) = await Campaign.findOne({where: {id: req.params.campaignId}});
+
+  if (!campaign) {
+    throw new CampaignDoesNotExistError();
+  }
+
+  // Do they have access?
+  if (
+    full && (
+      !req.context.isAuthenticated
+      || !req.context.user
+      || req.context.user.id !== campaign.ownerUserId
+    )
+  ) {
+    throw new NotAuthenticatedError();
+  }
+
+  // Get the field
+  let field: (CampaignField | null) = await CampaignField.findOne({
+    where: {
+      id: req.params.fieldId,
+      campaignId: campaign.id
+    }
+  });
+
+  // If the field doesn't exist
+  if (!field) {
+    throw new CampaignFieldDoesNotExistError();
+  }
+
+  // Update the field
+  await field.destroy();
+
+  res.status(200).json({success: true});
+}));
 
 server.put("/campaigns/:campaignId/backgroundStyle", authenticate(true), wrap(async function (req, res) {
   let params: ICampaignUpdateBackgroundStyleArgs = req.body as ICampaignUpdateBackgroundStyleArgs;

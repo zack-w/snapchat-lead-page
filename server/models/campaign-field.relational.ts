@@ -56,6 +56,7 @@ export default class CampaignField extends Model<CampaignField> {
 			id: this.id,
 			campaignId: this.campaignId,
 			key: this.key,
+			niceName: this.niceName,
 			type: this.type
 		};
 	}
