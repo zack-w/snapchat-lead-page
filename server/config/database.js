@@ -1,15 +1,14 @@
-import { Sequelize } from "sequelize-typescript";
-import * as path from "path";
-import * as url from "url";
+require("dotenv").config();
+const url = require("url");
 
 var parse = require('pg-connection-string').parse;
 
-let sequelize;
+var databaseConfig = {};
 
 if (process.env.DATABASE_URL !== undefined) {
 	var config = parse(process.env.DATABASE_URL);
 
-	let databaseConfig: any = {
+	databaseConfig = {
 		host: config.host,
 		port: parseInt(config.port),
 		username: config.user,
@@ -21,19 +20,12 @@ if (process.env.DATABASE_URL !== undefined) {
 			ssl: { require: true }
 		}
 	};
-
-	sequelize = new Sequelize(databaseConfig);
-
-	//@ts-ignore
-	sequelize.authenticate()
-		.then(() => {
-			console.log('Connection has been established successfully.');
-		})
-		.catch(() => {
-			console.error('Unable to connect to the database:');
-		});
 } else {
 	throw Error("no posgres database information provided");
 }
 
-export default sequelize;
+
+module.exports = {};
+["development", "test", "production"].forEach((env) => {
+	module.exports[env] = databaseConfig;
+});
