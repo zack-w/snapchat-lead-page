@@ -16,8 +16,8 @@ if(process.env.NODE_ENV === 'production') {
     res.sendfile(path.join(__dirname = 'dist/index.html'));
   })
 }
-//build mode
-app.use('/assets', express.static(path.join(__dirname, 'src/assets')));
+
+app.use('/assets', express.static(path.join(__dirname+'/src/assets')));
 
 app.get('*', (req, res) => {
   res.sendFile(path.join(__dirname+'/dist/index.html'));
