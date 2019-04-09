@@ -1,4 +1,4 @@
 
 export const ENV = {
-	API_URL: "http://localhost:4000"
+	API_URL: "https://openpoll-landings-api.herokuapp.com"
 };
