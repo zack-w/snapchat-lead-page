@@ -4,6 +4,7 @@ import Form from "./landing-components/Form";
 import Landing from "./landing-components/Landing";
 import Complete from "./landing-components/Complete";
 import { ENV } from "../environments/environment";
+import "./LandingApp.scss";
 
 const axios = require('axios');
 
@@ -124,14 +125,16 @@ class LandingApp extends PureComponent {
     };
 
     return (
-      <div style={{paddingBottom: 20}}>
+      <div>
         <Header />
-        
-        {
-          this.state.showForm
-          ? <Form />
-          : <Landing onSubmit={() => this.setState({showForm: true})}/>
-        }
+        <div className="wrapper" style={{paddingBottom: 20}}>
+          
+          {
+            this.state.showForm
+            ? <Form />
+            : <Landing onSubmit={() => this.setState({showForm: true})}/>
+          }
+        </div>
       </div>
     );
   }

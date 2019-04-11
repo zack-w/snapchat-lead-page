@@ -13,8 +13,9 @@ h1 {
 	color: #FFF;
 	// font-size: 2.2em;
 	font-size: 10vw;
+	// font-size: 90px;
 	text-shadow: 2px 2px 0.2em rgba(0,0,0,0.2);
-	padding: 1vh 1vh;
+	padding: 1vh 2vw;
 	font-weight: 600;
 	text-align: center;
 	overflow: hidden;
@@ -22,9 +23,11 @@ h1 {
 
 h2 {
 	color: #FFF;
-	font-size: 2.2em;
+	// font-size: 2.2em;
+	// font-size: 90px;
+	font-size: 7vw;
 	text-shadow: 2px 2px 0.2em rgba(0,0,0,0.2);
-	padding: 0vh 1vh;
+	padding: 0vh 2vw;
 	font-weight: 600;
 	text-align: center;
 	overflow: hidden;
@@ -32,10 +35,12 @@ h2 {
 
 p {
 	// font-size: 1.2em;
-	font-size: 5.5vw;
+	// font-size: 5.5vw;
+	// font-size: 50px;
+	font-size: 6vw;
 	font-weight: 300;
 	text-align: center;
-	padding: 0vh 5vh;
+	padding: 0vh 3vw;
 	color: #FFF;
 }
 
@@ -50,6 +55,7 @@ p {
 	border: 0;
 	// font-size: 1.6em;
 	font-size: 7vw;
+	// font-size: 70px;
 	font-weight: 600;
 	padding: 0.5em 1em;
 	border-radius: 5%;

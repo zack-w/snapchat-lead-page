@@ -34,7 +34,7 @@ class Landing extends PureComponent {
 
 			<div className="callToActionWrapper">
 				<button onClick={() => this.onSubmit()}>
-					{DYNAMIC_STYLING.content.landingButtonText}
+					{DYNAMIC_STYLING.content.landingButtonText}!
 				</button>
 			</div>
 		</div>
